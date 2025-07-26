@@ -1,0 +1,6 @@
+@ApiValidationFramework_HostAddress = http://localhost:5155
+
+GET {{ApiValidationFramework_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
