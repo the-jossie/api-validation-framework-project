@@ -13,6 +13,9 @@ namespace ApiValidationFramework.Controllers
             if (order == null)
                 return BadRequest("Order cannot be null.");
 
+            if (order.EndDate < order.StartDate)
+            return BadRequest("EndDate must be after StartDate");
+
             return Ok(new { message = "Order created", order });
         }
     }
