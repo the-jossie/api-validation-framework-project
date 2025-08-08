@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+*.md
+.git
+.gitignore
+*.user
+.vscode/
+*.suo
+*.swp
+*.DS_Store
+docker-compose*
+*.Tests/
