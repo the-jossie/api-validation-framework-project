@@ -3,11 +3,13 @@ using System.Net.Http.Json;
 using Xunit;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-public class OrderControllerTests : IClassFixture<WebApplicationFactory<Program>>
+public class OrderApiIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
 
-    public OrderControllerTests(WebApplicationFactory<Program> factory)
+
+
+    public OrderApiIntegrationTests(WebApplicationFactory<Program> factory)
     {
         _client = factory.CreateClient();
     }
