@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "3db25c38-5d6d-4fdb-80cc-5220c463628d",
+		"name": "AVF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18067638"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate unique product name with timestamp",
+							"pm.variables.set(\"productName\", `Nike AF1-${Date.now()}`);",
+							"",
+							"// Random quantity between 1 and 100",
+							"pm.variables.set(\"quantity\", Math.floor(Math.random() * 100) + 1);",
+							"",
+							"// Random start date within the last 10 days",
+							"let start = new Date();",
+							"start.setDate(start.getDate() - Math.floor(Math.random() * 10));",
+							"pm.variables.set(\"startDate\", start.toISOString().split('T')[0]);",
+							"",
+							"// Random end date 1-10 days after start date",
+							"let end = new Date(start);",
+							"end.setDate(start.getDate() + Math.floor(Math.random() * 10) + 1);",
+							"pm.variables.set(\"endDate\", end.toISOString().split('T')[0]);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productName\": \"{{productName}}\",\n    \"quantity\": {{quantity}},\n    \"startDate\": \"{{startDate}}\",\n    \"endDate\": \"{{endDate}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "startDate",
+			"value": ""
+		},
+		{
+			"key": "endDate",
+			"value": ""
+		}
+	]
+}
