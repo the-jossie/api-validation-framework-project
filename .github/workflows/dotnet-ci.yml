@@ -28,11 +28,17 @@ jobs:
     - name: Run tests
       run: dotnet test --no-build --configuration Release --verbosity normal
 
+    - name: Setup Swashbuckle CLI as local tool
+      run: |
+        cd ApiValidationFramework
+        dotnet new tool-manifest || echo "Tool manifest already exists"
+        dotnet tool install Swashbuckle.AspNetCore.Cli --version 9.0.4
+        dotnet tool restore
+
     - name: Generate Swagger JSON
       run: |
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet swagger tofile --output swagger.json ./ApiValidationFramework/bin/Release/net8.0/ApiValidationFramework.dll v1
+        cd ApiValidationFramework
+        dotnet swagger tofile --output swagger.json ./bin/Release/net8.0/ApiValidationFramework.dll v1
 
   docker-build:
     runs-on: ubuntu-latest
