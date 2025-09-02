@@ -30,9 +30,9 @@ jobs:
 
     - name: Generate Swagger JSON
       run: |
-        dotnet tool install --global Swashbuckle.AspNetCore.Cli
-        export PATH="$PATH:/home/runner/.dotnet/tools"
-        swagger tofile --output swagger.json ./ApiValidationFramework/bin/Release/net8.0/ApiValidationFramework.dll v1
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet swagger tofile --output swagger.json ./ApiValidationFramework/bin/Release/net8.0/ApiValidationFramework.dll v1
 
   docker-build:
     runs-on: ubuntu-latest
