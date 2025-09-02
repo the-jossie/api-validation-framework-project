@@ -63,10 +63,104 @@ The API will be available at [http://localhost:5155](http://localhost:5155) (see
 }
 ```
 
+**Response:**
+```json
+{
+  "message": "Order created",
+  "order": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "productName": "Nike AF1",
+    "quantity": 10,
+    "startDate": "2025-08-01T00:00:00Z",
+    "endDate": "2025-08-10T00:00:00Z",
+    "createdAt": "2025-01-27T10:30:00Z",
+    "updatedAt": null
+  }
+}
+```
+
+### Get All Orders
+
+**GET** `/orders`
+
+**Response:**
+```json
+[
+  {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "productName": "Nike AF1",
+    "quantity": 10,
+    "startDate": "2025-08-01T00:00:00Z",
+    "endDate": "2025-08-10T00:00:00Z",
+    "createdAt": "2025-01-27T10:30:00Z",
+    "updatedAt": null
+  }
+]
+```
+
+### Get Order by ID
+
+**GET** `/order/{id}`
+
+**Response:**
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "productName": "Nike AF1",
+  "quantity": 10,
+  "startDate": "2025-08-01T00:00:00Z",
+  "endDate": "2025-08-10T00:00:00Z",
+  "createdAt": "2025-01-27T10:30:00Z",
+  "updatedAt": null
+}
+```
+
+### Update Order
+
+**PUT** `/order/{id}`
+
+**Request Body:**
+```json
+{
+  "productName": "Adidas Superstar",
+  "quantity": 5,
+  "startDate": "2025-08-02",
+  "endDate": "2025-08-12"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Order updated",
+  "order": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "productName": "Adidas Superstar",
+    "quantity": 5,
+    "startDate": "2025-08-02T00:00:00Z",
+    "endDate": "2025-08-12T00:00:00Z",
+    "createdAt": "2025-01-27T10:30:00Z",
+    "updatedAt": "2025-01-27T11:00:00Z"
+  }
+}
+```
+
+### Delete Order
+
+**DELETE** `/order/{id}`
+
+**Response:**
+```json
+{
+  "message": "Order deleted successfully"
+}
+```
+
 **Validation Rules:**
 - `productName`: Required, max 100 chars
 - `quantity`: 1–1000
 - `endDate` must be after `startDate`
+- All validation rules apply to both Create and Update operations
 
 ## Swagger UI
 
