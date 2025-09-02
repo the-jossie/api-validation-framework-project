@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "3db25c38-5d6d-4fdb-80cc-5220c463628d",
-		"name": "AVF",
+		"name": "API Validation Framework",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18067638"
 	},
@@ -33,11 +33,32 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Store the created order ID for subsequent requests",
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.order && response.order.id) {",
+							"        pm.variables.set(\"orderId\", response.order.id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"productName\": \"{{productName}}\",\n    \"quantity\": {{quantity}},\n    \"startDate\": \"{{startDate}}\",\n    \"endDate\": \"{{endDate}}\"\n}\n",
@@ -60,6 +81,179 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get All Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/order/{{orderId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate updated product name",
+							"pm.variables.set(\"updatedProductName\", `Adidas Superstar-${Date.now()}`);",
+							"",
+							"// Random quantity between 1 and 100",
+							"pm.variables.set(\"updatedQuantity\", Math.floor(Math.random() * 100) + 1);",
+							"",
+							"// Random start date within the last 10 days",
+							"let start = new Date();",
+							"start.setDate(start.getDate() - Math.floor(Math.random() * 10));",
+							"pm.variables.set(\"updatedStartDate\", start.toISOString().split('T')[0]);",
+							"",
+							"// Random end date 1-10 days after start date",
+							"let end = new Date(start);",
+							"end.setDate(start.getDate() + Math.floor(Math.random() * 10) + 1);",
+							"pm.variables.set(\"updatedEndDate\", end.toISOString().split('T')[0]);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productName\": \"{{updatedProductName}}\",\n    \"quantity\": {{updatedQuantity}},\n    \"startDate\": \"{{updatedStartDate}}\",\n    \"endDate\": \"{{updatedEndDate}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/order/{{orderId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/order/{{orderId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order - Invalid (EndDate before StartDate)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productName\": \"Invalid Order\",\n    \"quantity\": 10,\n    \"startDate\": \"2025-08-10\",\n    \"endDate\": \"2025-08-01\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order - Non-existent ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/order/00000000-0000-0000-0000-000000000000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
@@ -69,6 +263,34 @@
 		},
 		{
 			"key": "endDate",
+			"value": ""
+		},
+		{
+			"key": "productName",
+			"value": ""
+		},
+		{
+			"key": "quantity",
+			"value": ""
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		},
+		{
+			"key": "updatedProductName",
+			"value": ""
+		},
+		{
+			"key": "updatedQuantity",
+			"value": ""
+		},
+		{
+			"key": "updatedStartDate",
+			"value": ""
+		},
+		{
+			"key": "updatedEndDate",
 			"value": ""
 		}
 	]
