@@ -12,7 +12,7 @@ namespace ApiValidationFramework.Tests
             builder.ConfigureServices(services =>
             {
                 // Ensure the OrderService is registered for testing
-                services.AddScoped<IOrderService, OrderService>();
+                services.AddSingleton<IOrderService, OrderService>();
             });
         }
     }
