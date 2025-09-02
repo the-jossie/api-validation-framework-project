@@ -25,6 +25,7 @@ builder.Services.AddSingleton<IOrderService, OrderService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 
